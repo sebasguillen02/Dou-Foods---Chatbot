@@ -371,7 +371,7 @@
       "#doucito-messages::-webkit-scrollbar{width:6px;}",
       "#doucito-messages::-webkit-scrollbar-thumb{background:" + DOU.turquoise + ";border-radius:3px;}",
 
-      ".doucito-msg{display:flex;gap:8px;max-width:85%;animation:doucito-fadeIn .3s ease;}",
+      ".doucito-msg{display:flex;gap:8px;max-width:88%;animation:doucito-fadeIn .3s ease;}",
       ".doucito-msg.bot{align-self:flex-start;}",
       ".doucito-msg.user{align-self:flex-end;flex-direction:row-reverse;}",
 
@@ -379,7 +379,7 @@
 
       ".doucito-msg-avatar{width:28px;height:28px;flex-shrink:0;margin-top:4px;}",
 
-      ".doucito-msg-bubble{padding:12px 16px;border-radius:16px;border:2px solid " + DOU.black + ";font-size:14px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;overflow:visible;}",
+      ".doucito-msg-bubble{padding:14px 18px;border-radius:16px;border:2px solid " + DOU.black + ";font-size:15px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;overflow:visible;}",
       ".doucito-msg.bot .doucito-msg-bubble{background:" + DOU.botBubble + ";color:" + DOU.black + ";border-bottom-left-radius:4px;}",
       ".doucito-msg.user .doucito-msg-bubble{background:" + DOU.userBubble + ";color:" + DOU.white + ";border-bottom-right-radius:4px;}",
 
