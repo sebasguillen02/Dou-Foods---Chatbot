@@ -130,7 +130,7 @@
     {
       keywords: [/seguimiento/i, /rastrear/i, /tracking/i, /n[uú]mero.*pedido/i, /estado.*pedido/i, /mi\s*pedido/i, /donde\s*esta\s*mi/i],
       replies: [
-        "Para ver el estado de tu pedido, revisa el mail que te llego cuando hiciste la compra. Ahi tenes el numero de seguimiento. Si no lo encontras o tenes algun problema, escribinos por WhatsApp y te ayudamos!",
+        "Segui tu pedido aca: doufoods.com.ar/seguimiento",
       ],
       quickReplies: [
         { label: "Contactar soporte", value: "contacto" },
@@ -202,12 +202,35 @@
       ],
     },
     {
-      keywords: [/dou\s*gang/i, /gang/i, /punto[s]?\b/i, /comunidad/i, /sumo\s*punto/i, /c[oó]mo\s*sumo/i, /programa/i, /beneficio/i, /reward/i],
+      keywords: [/dou\s*gang/i, /gang/i, /punto[s]?\b/i, /comunidad/i, /sumo\s*punto/i, /c[oó]mo\s*sumo/i, /programa/i, /beneficio/i, /reward/i, /coin/i, /canjear/i, /canje/i],
       replies: [
-        "La DOU GANG es nuestra comunidad! Somos la gang del mejor alfajor del mundo. Unite, participa de nuestras promos y enterate de todo antes que nadie.\n\nPara mas info, entra a doufoods.com.ar y seguinos en Instagram @doufoods!",
+        "Compras DOU, juntas DOU coins y las canjeas por lo que quieras: stickers, gorra, remera, una caja gratis o un saludo de Benja. Sin tarjetas, sin vueltas: tu mail es tu cuenta.\n\n" +
+          "Como funciona?\n" +
+          "📧 Sumate: Pones tu mail y ya sos parte. Te regalamos las primeras coins.\n" +
+          "🛒 Compra online: 1 coin por cada $100. Una caja x12 son 168 coins.\n" +
+          "🎂 Tu cumple: El dia que cumplis te caen coins de regalo, compres o no.\n" +
+          "👥 Trae un amigo: Tu amigo se lleva 10% off y vos sumas 300 coins.\n\n" +
+          "Que podes canjear?\n" +
+          "🗒 Pack de stickers — 300 coins\n" +
+          "🪙 Llavero DOU Coin — 600 coins\n" +
+          "🧢 Gorra DOU — 1.500 coins\n" +
+          "📦 Una caja de cada sabor — 2.200 coins\n" +
+          "👕 Remera DOU GANG — 3.000 coins\n" +
+          "🧢👕 Gorra + Remera — 4.000 coins\n" +
+          "🎥 Saludo de Benja — 6.000 coins",
       ],
       quickReplies: [
-        { label: "Seguirlos en IG", value: "redes" },
+        { label: "Saludo de Benja", value: "saludo de benja" },
+        { label: "Ir a la tienda", value: "tienda online" },
+      ],
+    },
+    {
+      keywords: [/saludo/i, /video\s*de\s*benja/i, /saludo\s*de\s*benja/i],
+      replies: [
+        "Benja te graba un video saludandote con tu nombre. Para vos o para regalar. Unite a la DOU GANG y junta 6.000 coins.",
+      ],
+      quickReplies: [
+        { label: "DOU GANG", value: "dou gang" },
         { label: "Ir a la tienda", value: "tienda online" },
       ],
     },
@@ -230,7 +253,7 @@
     {
       keywords: [/qui[eé]n(es)?\s*(son|es)/i, /sobre\s*dou/i, /historia/i, /creador/i, /benja/i, /fundador/i, /marca/i, /empresa/i],
       replies: [
-        "DOU nacio de la cabeza de Benja, un creador con una comunidad de mas de 30 millones de seguidores. El sueno: crear el MEJOR alfajor del mundo. Y aca estamos, rompiendo todo con NOM, XD y NT!",
+        "Benja Calero es un youtuber y creador de contenido argentino enfocado en un publico joven. 'Arranque grabando videos en mi cuarto. Hoy tengo en la mano el mejor alfajor del planeta — y esto recien empieza. Sumate a la DOU GANG: no vinimos a competir, vinimos a ser la marca #1 del mundo. 🏆🔥'",
       ],
       quickReplies: [
         { label: "Ver los alfajores", value: "productos" },
@@ -482,7 +505,7 @@
     escaped = escaped.replace(/\n/g, "<br>");
 
     escaped = escaped.replace(
-      /(doufoods\.com\.ar\/tienda|doufoods\.com\.ar)/g,
+      /(doufoods\.com\.ar\/seguimiento|doufoods\.com\.ar\/tienda|doufoods\.com\.ar)/g,
       '<a href="https://$1" target="_blank" rel="noopener" style="color:' + DOU.turquoise + ';font-weight:600;text-decoration:underline;">$1</a>'
     );
     escaped = escaped.replace(
