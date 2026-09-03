@@ -379,12 +379,12 @@
 
       ".doucito-msg-avatar{width:28px;height:28px;flex-shrink:0;margin-top:4px;}",
 
-      ".doucito-msg-bubble{padding:14px 18px;border-radius:16px;border:2px solid " + DOU.black + ";font-size:15px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;overflow:visible;}",
+      ".doucito-msg-bubble{padding:16px 20px;border-radius:16px;border:2px solid " + DOU.black + ";font-size:15px;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;overflow:visible;}",
       ".doucito-msg.bot .doucito-msg-bubble{background:" + DOU.botBubble + ";color:" + DOU.black + ";border-bottom-left-radius:4px;}",
       ".doucito-msg.user .doucito-msg-bubble{background:" + DOU.userBubble + ";color:" + DOU.white + ";border-bottom-right-radius:4px;}",
 
       ".doucito-quick-replies{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 4px 36px;}",
-      ".doucito-quick-btn{padding:6px 14px;border-radius:20px;border:2px solid " + DOU.turquoise + ";background:" + DOU.white + ";color:" + DOU.turquoise + ";font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;opacity:0;animation:doucito-fadeIn .3s ease forwards;}",
+      ".doucito-quick-btn{padding:10px 18px;border-radius:20px;border:2px solid " + DOU.turquoise + ";background:" + DOU.white + ";color:" + DOU.turquoise + ";font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;opacity:0;animation:doucito-fadeIn .3s ease forwards;}",
       ".doucito-quick-btn:hover{background:" + DOU.turquoise + ";color:" + DOU.white + ";}",
 
       ".doucito-typing{display:flex;gap:8px;align-self:flex-start;max-width:85%;padding:4px 0;}",
