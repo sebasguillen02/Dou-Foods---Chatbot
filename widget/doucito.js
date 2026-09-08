@@ -245,9 +245,9 @@
       ],
     },
     {
-      keywords: [/instagram/i, /red(es)?\s*social/i, /tiktok/i, /twitter/i, /youtube/i, /seguir/i, /ig\b/i],
+      keywords: [/redes/i, /instagram/i, /tiktok/i, /red(es)?\s*social/i, /seguir/i, /ig\b/i],
       replies: [
-        "Seguinos en Instagram como @doufoods! Ahi subimos contenido, promos, sorteos y todo lo nuevo de DOU. Unite a la DOU GANG!",
+        "Seguinos en:\n📸 Instagram: instagram.com/doufoods\n🎵 TikTok: tiktok.com/@doufoods",
       ],
     },
     {
@@ -290,6 +290,54 @@
       ],
       quickReplies: [
         { label: "Ir a la tienda", value: "tienda online" },
+      ],
+    },
+    {
+      keywords: [/sucursal/i, /\blocal\b/i, /donde\s*los\s*consigo/i, /\bcerca\b/i, /kiosco/i, /distribuidores/i],
+      replies: [
+        "No tenemos local propio, pero podes encontrarnos en distribuidores de todo el pais: Rappi, Open 25, Showcase y mas. Fijate todos los puntos aca: doufoods.com.ar/donde",
+      ],
+      quickReplies: [
+        { label: "Tienda online", value: "tienda online" },
+        { label: "Envios", value: "envios" },
+      ],
+    },
+    {
+      keywords: [/descuento/i, /promo/i, /oferta/i, /promoci[oó]n/i, /sale/i, /rebaja/i],
+      replies: [
+        "Todos nuestros productos tienen un 10% OFF. Para estar al tanto de futuras promos, sumate a la DOU GANG dejando tu mail aca: doufoods.com.ar/dougang",
+      ],
+      quickReplies: [
+        { label: "DOU GANG", value: "dou gang" },
+        { label: "Ir a la tienda", value: "tienda online" },
+      ],
+    },
+    {
+      keywords: [/personalizado/i, /personalizar/i, /caja\s*personalizada/i, /armar\s*caja/i, /pedido\s*especial/i],
+      replies: [
+        "Podes sumar al carrito los alfajores que vos quieras. Ya hay mix armados, pero tambien podes armar tu propio mix desde el carrito. En el checkout podes dejar una nota para aclaraciones!",
+      ],
+      quickReplies: [
+        { label: "Ver productos", value: "productos" },
+        { label: "Ir a la tienda", value: "tienda online" },
+      ],
+    },
+    {
+      keywords: [/vence/i, /vencimiento/i, /\bdura\b/i, /vida\s*[uú]til/i, /fecha/i, /caducidad/i],
+      replies: [
+        "El NOM y el XD tienen 3 meses de vida util. El NT tiene 4 meses.",
+      ],
+      quickReplies: [
+        { label: "Ver productos", value: "productos" },
+      ],
+    },
+    {
+      keywords: [/internacional/i, /otro\s*pa[ií]s/i, /exterior/i, /afuera/i, /fuera\s*de\s*argentina/i, /uruguay/i, /chile/i],
+      replies: [
+        "Por el momento no hacemos envios internacionales. Solo Argentina por ahora 🇦🇷",
+      ],
+      quickReplies: [
+        { label: "Envios nacionales", value: "envios" },
       ],
     },
     {
@@ -379,7 +427,7 @@
 
       ".doucito-msg-avatar{width:28px;height:28px;flex-shrink:0;margin-top:4px;}",
 
-      ".doucito-msg-bubble{padding:16px 20px;border-radius:16px;border:2px solid " + DOU.black + ";font-size:15px;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;overflow:visible;}",
+      ".doucito-msg-bubble{padding:16px 20px;border-radius:16px;border:2px solid " + DOU.black + ";font-size:15px;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;overflow:visible;text-align:left;}",
       ".doucito-msg.bot .doucito-msg-bubble{background:" + DOU.botBubble + ";color:" + DOU.black + ";border-bottom-left-radius:4px;}",
       ".doucito-msg.user .doucito-msg-bubble{background:" + DOU.userBubble + ";color:" + DOU.white + ";border-bottom-right-radius:4px;}",
 
@@ -507,8 +555,16 @@
     escaped = escaped.replace(/\n/g, "<br>");
 
     escaped = escaped.replace(
-      /(doufoods\.com\.ar\/seguimiento|doufoods\.com\.ar\/tienda|doufoods\.com\.ar)/g,
+      /(doufoods\.com\.ar\/seguimiento|doufoods\.com\.ar\/tienda|doufoods\.com\.ar\/donde|doufoods\.com\.ar\/dougang|doufoods\.com\.ar)/g,
       '<a href="https://$1" target="_blank" rel="noopener" style="color:' + DOU.turquoise + ';font-weight:600;text-decoration:underline;">$1</a>'
+    );
+    escaped = escaped.replace(
+      /instagram\.com\/doufoods/g,
+      '<a href="https://instagram.com/doufoods" target="_blank" rel="noopener" style="color:' + DOU.turquoise + ';font-weight:600;text-decoration:underline;">instagram.com/doufoods</a>'
+    );
+    escaped = escaped.replace(
+      /tiktok\.com\/@doufoods/g,
+      '<a href="https://tiktok.com/@doufoods" target="_blank" rel="noopener" style="color:' + DOU.turquoise + ';font-weight:600;text-decoration:underline;">tiktok.com/@doufoods</a>'
     );
     escaped = escaped.replace(
       /@doufoods/g,
