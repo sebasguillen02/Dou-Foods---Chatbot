@@ -128,13 +128,14 @@
       ],
     },
     {
-      keywords: [/seguimiento/i, /rastrear/i, /tracking/i, /n[uú]mero.*pedido/i, /estado.*pedido/i, /mi\s*pedido/i, /donde\s*esta\s*mi/i],
+      keywords: [/seguimiento/i, /rastrear/i, /tracking/i, /n[uú]mero.*pedido/i, /estado.*pedido/i, /estado.*env[ií]o/i, /mi\s*pedido/i, /donde\s*esta\s*mi/i],
       replies: [
-        "Segui tu pedido aca: doufoods.com.ar/seguimiento",
+        "Claro! Pasame tu numero de seguimiento y te digo como va tu pedido.",
       ],
       quickReplies: [
         { label: "Contactar soporte", value: "contacto" },
       ],
+      action: "await_tracking",
     },
     {
       keywords: [/pag[oa]/i, /tarjeta/i, /mercado\s*pago/i, /c[oó]mo\s*pag/i, /medio.*pago/i, /d[eé]bito/i, /cr[eé]dito/i, /transferencia/i, /efectivo/i],
@@ -170,11 +171,11 @@
       ],
     },
     {
-      keywords: [/d[oó]nde\s*(compro|consigo|encuentro|los\s*venden)/i, /punto.*venta/i, /kiosco/i, /supermercado/i, /distri/i, /comprar/i, /conseguir/i, /venden/i],
+      keywords: [/d[oó]nde\s*(compro|consigo|encuentro|los\s*venden)/i, /punto.*venta/i, /kiosco/i, /supermercado/i, /distri/i, /comprar/i, /conseguir/i, /venden/i, /local\s*f[ií]sico/i, /f[ií]sico/i, /locales/i],
       replies: [
         "Podes comprar DOU de dos formas:\n\n" +
-          "🛒 ONLINE: En nuestra tienda doufoods.com.ar/tienda con envio a todo el pais.\n\n" +
-          "🏪 FISICO: En kioscos, distribuidores y supermercados de todo el pais. En la web tenes un mapa con todos los puntos de venta cerca tuyo!",
+          "🛒 ONLINE: En doufoods.com.ar/tienda con envio a todo el pais.\n\n" +
+          "🏪 LOCALES: Consulta en tu kiosco mas cercano!",
       ],
       quickReplies: [
         { label: "Ir a la tienda online", value: "tienda online" },
@@ -410,8 +411,9 @@
 
       "@keyframes doucito-slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}",
 
-      "#doucito-header{background:linear-gradient(135deg," + DOU.orange + " 0%," + DOU.magenta + " 100%);padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:3px solid " + DOU.black + ";}",
+      "#doucito-header{background:linear-gradient(135deg," + DOU.orange + " 0%," + DOU.magenta + " 100%);padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:3px solid " + DOU.black + ";justify-content:center;}",
       "#doucito-header-avatar{width:40px;height:40px;flex-shrink:0;}",
+      "#doucito-header-info{text-align:center;}",
       "#doucito-header-info h3{color:" + DOU.white + ";font-size:16px;font-weight:800;text-shadow:1px 1px 0 " + DOU.black + ";}",
       "#doucito-header-info p{color:rgba(255,255,255,0.9);font-size:12px;font-weight:500;}",
 
@@ -451,7 +453,7 @@
       "#doucito-send:active{transform:scale(0.95);}",
       "#doucito-send svg{width:18px;height:18px;}",
 
-      "#doucito-powered{text-align:center;padding:6px;font-size:10px;color:#999;background:" + DOU.white + ";}",
+      "#doucito-powered{text-align:center;padding:6px;font-size:10px;color:#7C3AED;font-weight:600;background:" + DOU.white + ";}",
 
       "@media(max-width:480px){" +
         "#doucito-window{bottom:0;right:0;width:100vw;max-width:100vw;height:100vh;max-height:100vh;border-radius:0;border:none;}" +
@@ -518,6 +520,8 @@
           return {
             text: getRandomItem(entry.replies),
             quickReplies: entry.quickReplies || null,
+            action: entry.action || null,
+            matched: true,
           };
         }
       }
@@ -525,6 +529,8 @@
     return {
       text: getRandomItem(FALLBACK_REPLIES),
       quickReplies: QUICK_REPLIES_INITIAL,
+      action: null,
+      matched: false,
     };
   }
 
@@ -565,6 +571,10 @@
     escaped = escaped.replace(
       /tiktok\.com\/@doufoods/g,
       '<a href="https://tiktok.com/@doufoods" target="_blank" rel="noopener" style="color:' + DOU.turquoise + ';font-weight:600;text-decoration:underline;">tiktok.com/@doufoods</a>'
+    );
+    escaped = escaped.replace(
+      /info@doufoods\.com\.ar/g,
+      '<a href="mailto:info@doufoods.com.ar" style="color:' + DOU.turquoise + ';font-weight:600;text-decoration:underline;">info@doufoods.com.ar</a>'
     );
     escaped = escaped.replace(
       /@doufoods/g,
@@ -618,6 +628,44 @@
     if (typing) typing.remove();
   }
 
+  function trackShipment(code, container, handleSend) {
+    showTyping(container);
+    fetch("https://ultimamilla.akeron.net/api/v1/auth/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ client_api: "Doufoods", client_secret: "doufoods123" }),
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (auth) {
+        var token = auth.api_token || auth.token || auth.access_token;
+        if (!token) throw new Error("no token");
+        return fetch("https://ultimamilla.akeron.net/api/shipping/state/" + encodeURIComponent(code), {
+          headers: { "Authorization": "Bearer " + token },
+        });
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error("not found");
+        return res.json();
+      })
+      .then(function (data) {
+        hideTyping();
+        var status = data.state || data.status || data.estado || JSON.stringify(data);
+        addMessage(container, "📦 Estado de tu envio (" + code + "):\n" + status, "bot");
+        addQuickReplies(container, [
+          { label: "Consultar otro", value: "seguimiento" },
+          { label: "Contactar soporte", value: "contacto" },
+        ], handleSend);
+      })
+      .catch(function () {
+        hideTyping();
+        addMessage(container, "No encontre ese numero de seguimiento. Verifica que sea correcto o contactanos a traves de info@doufoods.com.ar", "bot");
+        addQuickReplies(container, [
+          { label: "Reintentar", value: "seguimiento" },
+          { label: "Contactar soporte", value: "contacto" },
+        ], handleSend);
+      });
+  }
+
   function init() {
     injectStyles();
     createDOM();
@@ -628,6 +676,7 @@
     var input = document.getElementById("doucito-input");
     var sendBtn = document.getElementById("doucito-send");
     var welcomed = false;
+    var awaitingTracking = false;
 
     function toggleChat() {
       var isOpen = chatWindow.classList.toggle("open");
@@ -653,14 +702,28 @@
 
       addMessage(messagesContainer, userText, "user");
 
+      var response = findResponse(userText);
+
+      if (response.matched) {
+        awaitingTracking = false;
+      }
+
+      if (awaitingTracking && !response.matched) {
+        awaitingTracking = false;
+        trackShipment(userText.trim(), messagesContainer, handleSend);
+        return;
+      }
+
       showTyping(messagesContainer);
 
       var delay = 500 + Math.random() * 700;
       setTimeout(function () {
         hideTyping();
-        var response = findResponse(userText);
         addMessage(messagesContainer, response.text, "bot");
         addQuickReplies(messagesContainer, response.quickReplies, handleSend);
+        if (response.action === "await_tracking") {
+          awaitingTracking = true;
+        }
       }, delay);
     }
 
