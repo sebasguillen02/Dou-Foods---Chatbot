@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     const token = auth.result?.[0]?.api_token;
     if (!token) throw new Error('no token');
 
-    const trackRes = await fetch('https://picklog.akeron.net/api/shipping/state/' + encodeURIComponent(code), {
+    const trackRes = await fetch('https://picklog.akeron.net/api/shipping/historial/' + encodeURIComponent(code), {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/json'
