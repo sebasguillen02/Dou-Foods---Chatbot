@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       body: 'client_api=a84e0675aba4322fbebd4ccf164f238deb9ea501b6ac15f16ae4c6aacf590426&client_secret=cb4979d3152ee649fb7f94b3ba4ac2625baa803d1ae43e0b7642b6b105b78758'
     });
     const authText = await authRes.text();
-    res.status(200).json({ raw: authText, status: authRes.status });
+    res.status(200).json({ raw: authText });
   } catch (err) {
     res.status(500).json({ error: err.message, stack: err.stack });
   }
