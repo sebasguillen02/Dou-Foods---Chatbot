@@ -630,7 +630,7 @@
 
   function trackShipment(code, container, handleSend) {
     showTyping(container);
-    fetch("https://TU-PROYECTO.vercel.app/api/tracking", {
+    fetch("https://dou-foods-chatbot.vercel.app/api/tracking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code: code }),
