@@ -22,11 +22,13 @@ export default async function handler(req, res) {
     if (!token) throw new Error('no token');
 
     const trackRes = await fetch('https://picklog.akeron.net/api/shipping/state/' + encodeURIComponent(code), {
-      headers: { 'Authorization': 'Bearer ' + token }
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      }
     });
-    const data = await trackRes.json();
-    const estado = data.result?.[0]?.state || data.result?.[0]?.status || data.state || data.status || JSON.stringify(data);
-    res.status(200).json({ estado });
+    const trackText = await trackRes.text();
+    res.status(200).json({ raw: trackText });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
