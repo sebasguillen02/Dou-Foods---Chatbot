@@ -630,7 +630,7 @@
 
   function trackShipment(code, container, handleSend) {
     showTyping(container);
-    fetch("https://ultimamilla.akeron.net/api/v1/auth/token", {
+    fetch("https://picklog.akeron.net/api/v1/auth/token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ client_api: "a84e0675aba4322fbebd4ccf164f238deb9ea501b6ac15f16ae4c6aacf590426", client_secret: "cb4979d3152ee649fb7f94b3ba4ac2625baa803d1ae43e0b7642b6b105b78758" }),
@@ -639,7 +639,7 @@
       .then(function (auth) {
         var token = auth.api_token || auth.token || auth.access_token;
         if (!token) throw new Error("no token");
-        return fetch("https://ultimamilla.akeron.net/api/shipping/state/" + encodeURIComponent(code), {
+        return fetch("https://picklog.akeron.net/api/shipping/state/" + encodeURIComponent(code), {
           headers: { "Authorization": "Bearer " + token },
         });
       })
