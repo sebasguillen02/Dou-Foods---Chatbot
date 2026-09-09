@@ -19,14 +19,14 @@ export default async function handler(req, res) {
       body: form.toString()
     });
     const auth = await authRes.json();
-    const token = auth.result?.[0]?.api_token;
+    const token = auth?.result?.[0]?.api_token || auth?.api_token || auth?.token || auth?.data?.token;
     if (!token) throw new Error('no token');
 
     const trackRes = await fetch('https://picklog.akeron.net/api/shipping/state/' + code, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     const data = await trackRes.json();
-    res.status(200).json(data);
+    res.status(200).json({ auth_response: auth, tracking_response: data });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
