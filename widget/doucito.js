@@ -630,26 +630,15 @@
 
   function trackShipment(code, container, handleSend) {
     showTyping(container);
-    fetch("https://picklog.akeron.net/api/v1/auth/token", {
+    fetch("https://TU-PROYECTO.vercel.app/api/tracking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ client_api: "a84e0675aba4322fbebd4ccf164f238deb9ea501b6ac15f16ae4c6aacf590426", client_secret: "cb4979d3152ee649fb7f94b3ba4ac2625baa803d1ae43e0b7642b6b105b78758" }),
+      body: JSON.stringify({ code: code }),
     })
       .then(function (res) { return res.json(); })
-      .then(function (auth) {
-        var token = auth.api_token || auth.token || auth.access_token;
-        if (!token) throw new Error("no token");
-        return fetch("https://picklog.akeron.net/api/shipping/state/" + encodeURIComponent(code), {
-          headers: { "Authorization": "Bearer " + token },
-        });
-      })
-      .then(function (res) {
-        if (!res.ok) throw new Error("not found");
-        return res.json();
-      })
       .then(function (data) {
         hideTyping();
-        var status = data.state || data.status || data.estado || JSON.stringify(data);
+        var status = data.state || data.status || data.estado || (data.result && data.result[0] && data.result[0].state) || JSON.stringify(data);
         addMessage(container, "📦 Estado de tu envio (" + code + "):\n" + status, "bot");
         addQuickReplies(container, [
           { label: "Consultar otro", value: "seguimiento" },
@@ -658,11 +647,7 @@
       })
       .catch(function () {
         hideTyping();
-        addMessage(container, "No encontre ese numero de seguimiento. Verifica que sea correcto o contactanos a traves de info@doufoods.com.ar", "bot");
-        addQuickReplies(container, [
-          { label: "Reintentar", value: "seguimiento" },
-          { label: "Contactar soporte", value: "contacto" },
-        ], handleSend);
+        addMessage(container, "No encontre ese numero. Verifica que sea correcto o contactanos a traves de info@doufoods.com.ar", "bot");
       });
   }
 
