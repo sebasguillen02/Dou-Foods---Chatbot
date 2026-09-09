@@ -47,7 +47,7 @@
       replies: [
         "Tenemos 3 alfajores que son una locura:\n\n" +
           "🟠 DOU NOM - Alfajor con chips de chocolate, dulce de leche y cobertura de chocolate semiamargo. El clasico que rompe todo.\n\n" +
-          "🔵 DOU XD - Cookie de chocolate crocante, dulce de leche y bano de chocolate blanco cremoso.\n\n" +
+          "🟢 DOU XD - Cookie de chocolate crocante, dulce de leche y bano de chocolate blanco cremoso.\n\n" +
           "🟣 DOU NT - Relleno cremoso de avellanas con bano de chocolate con leche.\n\n" +
           "Tambien tenemos el DOU MIX: una caja con los 3 sabores!",
       ],
@@ -687,17 +687,13 @@
 
       addMessage(messagesContainer, userText, "user");
 
-      var response = findResponse(userText);
-
-      if (response.matched) {
-        awaitingTracking = false;
-      }
-
-      if (awaitingTracking && !response.matched) {
+      if (awaitingTracking) {
         awaitingTracking = false;
         trackShipment(userText.trim(), messagesContainer, handleSend);
         return;
       }
+
+      var response = findResponse(userText);
 
       showTyping(messagesContainer);
 
