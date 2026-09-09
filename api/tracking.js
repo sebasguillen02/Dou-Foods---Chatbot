@@ -17,9 +17,17 @@ export default async function handler(req, res) {
       method: 'POST',
       body: params
     });
-    const authText = await authRes.text();
-    res.status(200).json({ raw: authText });
+    const auth = await authRes.json();
+    const token = auth.result?.[0]?.api_token;
+    if (!token) throw new Error('no token');
+
+    const trackRes = await fetch('https://picklog.akeron.net/api/shipping/state/' + encodeURIComponent(code), {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await trackRes.json();
+    const estado = data.result?.[0]?.state || data.result?.[0]?.status || data.state || data.status || JSON.stringify(data);
+    res.status(200).json({ estado });
   } catch (err) {
-    res.status(500).json({ error: err.message, stack: err.stack });
+    res.status(500).json({ error: err.message });
   }
 }
