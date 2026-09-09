@@ -9,13 +9,14 @@ export default async function handler(req, res) {
   const { code } = req.body;
 
   try {
+    const form = new URLSearchParams();
+    form.append('client_api', 'a84e0675aba4322fbebd4ccf164f238deb9ea501b6ac15f16ae4c6aacf590426');
+    form.append('client_secret', 'cb4979d3152ee649fb7f94b3ba4ac2625baa803d1ae43e0b7642b6b105b78758');
+
     const authRes = await fetch('https://picklog.akeron.net/api/v1/auth/token', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        client_api: 'a84e0675aba4322fbebd4ccf164f238deb9ea501b6ac15f16ae4c6aacf590426',
-        client_secret: 'cb4979d3152ee649fb7f94b3ba4ac2625baa803d1ae43e0b7642b6b105b78758'
-      })
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: form.toString()
     });
     const auth = await authRes.json();
     const token = auth.result?.[0]?.api_token;
