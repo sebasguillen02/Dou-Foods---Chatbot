@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const authRes = await fetch('https://picklog.akeron.net/api/v1/auth/token', {
       method: 'POST',
       headers: { 'Content-Type': 'multipart/form-data' },
-      body: 'client_api=a84e0675aba4322fbebd4ccf164f238deb9ea501b6ac15f16ae4c6aacf590426&client_secret=cb4979d3152ee649fb7f94b3ba4ac2625baa803d1ae43e0b7642b6b105b78758'
+      body: 'client_api=908e47a81534288488785a7dd6f07444f042138a220b700dcfdc85341932a02b&client_secret=fbef5c5a76c942a5efbc61bd075b97f37ba8175010371955d8e6958a85ca9bb0'
     });
     const authText = await authRes.text();
     res.status(200).json({ raw: authText });
