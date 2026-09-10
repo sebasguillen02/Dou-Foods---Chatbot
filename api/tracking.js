@@ -1,3 +1,6 @@
+import chromium from '@sparticuz/chromium';
+import puppeteer from 'puppeteer-core';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -8,31 +11,27 @@ export default async function handler(req, res) {
   const { code } = req.body;
   if (!code) return res.status(400).json({ error: 'no code' });
 
+  let browser = null;
   try {
-    const params = new URLSearchParams();
-    params.append('client_api', '908e47a81534288488785a7dd6f07444f042138a220b700dcfdc85341932a02b');
-    params.append('client_secret', 'fbef5c5a76c942a5efbc61bd075b97f37ba8175010371955d8e6958a85ca9bb0');
-
-    const authRes = await fetch('https://picklog.akeron.net/api/v1/auth/token', {
-      method: 'POST',
-      body: params
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     });
-    const auth = await authRes.json();
-    const token = auth.result?.[0]?.api_token;
-    if (!token) throw new Error('no token');
-
-    const trackRes = await fetch('https://picklog.akeron.net/api/shipping-client/filter', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ code: code })
+    const page = await browser.newPage();
+    await page.goto('https://www.picklog.com.ar/tracking', { waitUntil: 'networkidle2', timeout: 8000 });
+    await page.type('input[type="text"]', code);
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(3000);
+    const estado = await page.evaluate(() => {
+      const el = document.querySelector('.tracking-status, .estado, .status, h2, h3, p');
+      return el ? el.innerText : 'No se encontró el estado';
     });
-    const trackText = await trackRes.text();
-    res.status(200).json({ raw: trackText });
+    res.status(200).json({ estado });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  } finally {
+    if (browser) await browser.close();
   }
 }
