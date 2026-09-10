@@ -16,10 +16,11 @@ export default async function handler(req, res) {
         code: `
           export default async ({ page }) => {
             await page.goto('https://www.picklog.com.ar/tracking', { waitUntil: 'networkidle2', timeout: 10000 });
-            await page.waitForSelector('input', { timeout: 5000 });
-            await page.type('input', '${code}');
-            await page.keyboard.press('Enter');
-            await new Promise(r => setTimeout(r, 3000));
+            await page.waitForSelector('input[type="text"]', { timeout: 5000 });
+            await page.type('input[type="text"]', '${code}');
+            await new Promise(r => setTimeout(r, 1000));
+            await page.click('button[type="submit"], button.btn, button');
+            await new Promise(r => setTimeout(r, 4000));
             const texto = await page.evaluate(() => document.body.innerText);
             return { data: texto };
           };
