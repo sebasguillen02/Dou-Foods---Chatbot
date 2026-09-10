@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             await page.waitForSelector('input', { timeout: 5000 });
             await page.type('input', '${code}');
             await page.keyboard.press('Enter');
-            await page.waitForTimeout(3000);
+            await new Promise(r => setTimeout(r, 3000));
             const texto = await page.evaluate(() => document.body.innerText);
             return { data: texto };
           };
