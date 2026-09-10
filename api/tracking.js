@@ -17,8 +17,14 @@ export default async function handler(req, res) {
           export default async ({ page }) => {
             await page.goto('https://www.picklog.com.ar/tracking', { waitUntil: 'networkidle2', timeout: 10000 });
             await page.waitForSelector('input[type="text"]', { timeout: 5000 });
-            await page.type('input[type="text"]', '${code}');
-            await new Promise(r => setTimeout(r, 1000));
+            await page.evaluate((trackingCode) => {
+              const input = document.querySelector('input[type="text"]');
+              const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+              nativeInputValueSetter.call(input, trackingCode);
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+            }, code);
+            await new Promise(r => setTimeout(r, 500));
             await page.keyboard.press('Enter');
             await new Promise(r => setTimeout(r, 4000));
             const texto = await page.evaluate(() => document.body.innerText);
