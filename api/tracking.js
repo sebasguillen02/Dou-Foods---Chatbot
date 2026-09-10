@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         code: `
-          module.exports = async ({ page }) => {
+          export default async ({ page }) => {
             await page.goto('https://www.picklog.com.ar/tracking', { waitUntil: 'networkidle2', timeout: 10000 });
             await page.waitForSelector('input', { timeout: 5000 });
             await page.type('input', '${code}');
